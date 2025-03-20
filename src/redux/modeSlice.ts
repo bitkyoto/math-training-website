@@ -15,11 +15,7 @@ export const modeSlice = createSlice({
     setMode(state, action) {
       return action.payload
     },
-    setTime(state, action) {
-      state.time = action.payload
-      return state
-    },
   },
 })
 
-export const { setMode, setTime } = modeSlice.actions
+export const { setMode } = modeSlice.actions

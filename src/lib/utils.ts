@@ -112,6 +112,11 @@ export const generateTask = (operation: number, number1: number, number2: number
   }
 }
 
+interface Data {
+  tasks: number
+  correctPercentage: number
+}
+
 export const generateTasks = (mode: FormData) => {
   if (mode.selectedNumbers.length >= 1 && mode.selectedOperations.length >= 1) {
     const selectedOperations = [...mode.selectedOperations]
@@ -128,9 +133,15 @@ export const generateTasks = (mode: FormData) => {
 }
 export function writeResults(tasks: ResultTask[]) {
   const correctTasks = tasks.filter((task: ResultTask) => task.isCorrect)
-  if (!localStorage.getItem('questions') || !localStorage.getItem('correctAnswers')) {
-    localStorage.setItem('questions', `${tasks.length}`)
-    localStorage.setItem('correctAnswers', `${correctTasks.length}`)
+  const correctPercentage = correctTasks.length / tasks.length
+  console.log(correctPercentage)
+  if (!localStorage.getItem('data')) {
+    const dataToWrite: Data = {
+      tasks: tasks.length,
+      correctPercentage,
+    }
+    const data: Data[] = [dataToWrite]
+    localStorage.setItem('data', `${JSON.stringify(data)}`)
     localStorage.setItem(
       'previousAnswer',
       sha256(tasks.reduce((cur, task) => cur + task.question + task.userAnswer, '')).toString()
@@ -140,10 +151,33 @@ export function writeResults(tasks: ResultTask[]) {
       localStorage.getItem('previousAnswer') !==
       sha256(tasks.reduce((cur, task) => cur + task.question + task.userAnswer, '')).toString()
     ) {
-      let questions = parseInt(localStorage.getItem('questions')!)
-      let correctAnswers = parseInt(localStorage.getItem('correctAnswers')!)
-      localStorage.setItem('questions', `${questions + tasks.length}`)
-      localStorage.setItem('correctAnswers', `${correctAnswers + correctTasks.length}`)
+      let data: Data[] = JSON.parse(localStorage.getItem('data')!)
+      data.push({
+        tasks: tasks.length,
+        correctPercentage,
+      })
+      localStorage.setItem('data', `${JSON.stringify(data)}`)
+      localStorage.setItem(
+        'previousAnswer',
+        sha256(tasks.reduce((cur, task) => cur + task.question + task.userAnswer, '')).toString()
+      )
     }
   }
+}
+export function getResults() {
+  const results = localStorage.getItem('data')
+  if (results) {
+    const parsedResults: Data[] = JSON.parse(results)
+    console.log(JSON.parse(results))
+    return parsedResults.map((result, index) => ({
+      tasks: result.tasks,
+      correctPercentage: result.correctPercentage * 100, // Преобразуем процент в число от 0 до 100
+    }))
+  }
+  return []
+}
+
+export function getAveragePercentage(res: Data[]) {
+  const sum = res.reduce((prev, cur) => prev + cur.correctPercentage, 0)
+  return sum / res.length
 }

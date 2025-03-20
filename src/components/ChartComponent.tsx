@@ -1,16 +1,8 @@
 import { TrendingUp } from 'lucide-react'
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts'
+import { CartesianGrid, Label, Line, LineChart, XAxis, YAxis, Tooltip } from 'recharts'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-
-const chartData = [
-  { month: 'January', desktop: 186 },
-  { month: 'February', desktop: 305 },
-  { month: 'March', desktop: 237 },
-  { month: 'April', desktop: 73 },
-  { month: 'May', desktop: 209 },
-  { month: 'June', desktop: 214 },
-]
+import { getAveragePercentage, getResults } from '@/lib/utils'
 
 const chartConfig = {
   desktop: {
@@ -20,11 +12,14 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartComponent() {
+  const chartData = getResults()
+  const averagePercentage = getAveragePercentage(chartData)
+
   return (
-    <Card className="mt-10 max-w-3xl mx-auto">
+    <Card className="my-10 max-w-3xl mx-auto">
       <CardHeader className="text-center">
-        <CardTitle>Line Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Статистика по проценту правильных ответов</CardTitle>
+        <CardDescription>Ваши результаты за все время</CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center">
         <ChartContainer config={chartConfig} className="h-48">
@@ -40,24 +35,33 @@ export function ChartComponent() {
             }}
           >
             <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Line dataKey="desktop" type="natural" stroke="var(--chart-1)" strokeWidth={2} dot={false} />
+            <XAxis dataKey="tasks" axisLine={false} padding={{ left: 20, right: 0 }} tickMargin={8}>
+              <Label value="Число вопросов" position="top" offset={147.5} />
+            </XAxis>
+            <YAxis type="number" tickLine={false} axisLine={false}>
+              <Label value="Процент" position="insideLeft" offset={25} angle={-90} style={{ textAnchor: 'middle' }} />
+            </YAxis>
+            <Tooltip cursor={false} content={<CustomTooltip />} />
+            <Line dataKey="correctPercentage" type="natural" stroke="var(--chart-1)" strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
-      </CardFooter>
+      <div className="flex flex-col gap-2 font-medium leading-none text-center justify-center items-center">
+        <p>Ваш средний процент правильных ответов: {averagePercentage.toFixed(1)}%</p>
+      </div>
+      <div className="leading-none text-muted-foreground"></div>
     </Card>
   )
+}
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${payload[0].value}%`}</p>
+      </div>
+    )
+  }
+
+  return null
 }

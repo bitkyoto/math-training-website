@@ -153,6 +153,8 @@ export function SettingsCardForm() {
                 onChange={(e) => {
                   if (e.target.value) {
                     setAmountOfTasks(parseInt(e.target.value))
+                  } else {
+                    setAmountOfTasks(0)
                   }
                 }}
                 className="mb-4"
@@ -164,6 +166,8 @@ export function SettingsCardForm() {
                 onChange={(e) => {
                   if (e.target.value) {
                     setTime(parseInt(e.target.value))
+                  } else {
+                    setTime(0)
                   }
                 }}
               />

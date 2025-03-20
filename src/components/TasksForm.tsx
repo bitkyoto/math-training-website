@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { updateAnswer } from '@/redux/tasksSlice' // Импортируем действие updateAnswer
 import { ResultTask, Task } from '@/types/Task'
 import { Report } from './Report'
-import { setTime } from '@/redux/modeSlice'
 
 export const TasksForm = () => {
   const tasks = useSelector((state) => state.tasksSlice)
@@ -21,7 +20,6 @@ export const TasksForm = () => {
     if (timeLeft > 0 && !isCompleted) {
       const timer = setTimeout(() => {
         setTimeLeft(timeLeft - 1)
-        setTime(timeLeft - 1)
       }, 1000)
       return () => clearTimeout(timer)
     } else if (timeLeft === 0 && !isCompleted) {

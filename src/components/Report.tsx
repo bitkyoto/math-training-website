@@ -30,7 +30,7 @@ export const Report = ({ tasks, setCurrentTask, setIsCompleted, setTimeLeft }: R
               {tasks.map((result, index) => (
                 <li key={index} className={result.isCorrect ? 'text-green-500' : 'text-red-500'}>
                   {result.question} = {result.userAnswer}{' '}
-                  {result.isCorrect ? 'Правильно' : result.userAnswer !== undefined ? '' : 'Неправильно'}
+                  {result.isCorrect ? 'Правильно' : result.userAnswer === undefined ? '' : 'Неправильно'}
                 </li>
               ))}
             </ul>
