@@ -93,7 +93,7 @@ export function SettingsCardForm() {
   }
 
   return (
-    <Card className="mt-[20px] mx-auto w-[350px] h-full">
+    <Card className="mt-10 mx-auto w-[350px] h-full">
       <CardHeader>
         <CardTitle>Настройки тестирования</CardTitle>
         <CardDescription>Выберите желаемые настройки для вашего задания</CardDescription>
@@ -148,6 +148,7 @@ export function SettingsCardForm() {
             <div>
               <p className="mb-4">Число вопросов (10 - 100):</p>
               <Input
+                className="mb-2"
                 value={amountOfTasks}
                 defaultValue={20}
                 onChange={(e) => {
@@ -157,10 +158,11 @@ export function SettingsCardForm() {
                     setAmountOfTasks(0)
                   }
                 }}
-                className="mb-4"
               />
+              {errors.amountOfTasks && <p className="text-red-500 text-base">{errors.amountOfTasks.message}</p>}
               <p className="mb-4">Время в секундах (10-3600):</p>
               <Input
+                className="mb-2"
                 value={time}
                 defaultValue={120}
                 onChange={(e) => {
@@ -171,6 +173,7 @@ export function SettingsCardForm() {
                   }
                 }}
               />
+              {errors.time && <p className="text-red-500 text-base">{errors.time.message}</p>}
             </div>
           </div>
           <CardFooter className="mt-4 flex justify-center">
