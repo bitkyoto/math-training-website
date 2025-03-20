@@ -1,6 +1,7 @@
-import { ResultTask } from '@/types/Task'
+import { ResultTask, Task } from '@/types/Task'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { FormData } from '@/components/SettingsCardForm'
 import sha256 from 'crypto-js/sha256'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

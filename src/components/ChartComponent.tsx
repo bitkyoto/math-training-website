@@ -1,7 +1,6 @@
-import { TrendingUp } from 'lucide-react'
 import { CartesianGrid, Label, Line, LineChart, XAxis, YAxis, Tooltip } from 'recharts'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { getAveragePercentage, getResults } from '@/lib/utils'
 
 const chartConfig = {
@@ -41,7 +40,10 @@ export function ChartComponent() {
             <YAxis type="number" tickLine={false} axisLine={false}>
               <Label value="Процент" position="insideLeft" offset={25} angle={-90} style={{ textAnchor: 'middle' }} />
             </YAxis>
-            <Tooltip cursor={false} content={<CustomTooltip />} />
+            <Tooltip
+              cursor={false}
+              content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
+            />
             <Line dataKey="correctPercentage" type="natural" stroke="var(--chart-1)" strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>

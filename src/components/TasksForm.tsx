@@ -6,10 +6,11 @@ import { Input } from '@/components/ui/input'
 import { updateAnswer } from '@/redux/tasksSlice' // Импортируем действие updateAnswer
 import { ResultTask, Task } from '@/types/Task'
 import { Report } from './Report'
+import { RootState } from '@/redux/store'
 
 export const TasksForm = () => {
-  const tasks = useSelector((state) => state.tasksSlice)
-  const mode = useSelector((state) => state.modeSlice)
+  const tasks = useSelector((state: RootState) => state.tasksSlice)
+  const mode = useSelector((state: RootState) => state.modeSlice)
   const dispatch = useDispatch()
   const [currentTask, setCurrentTask] = useState<number>(1)
   const [answer, setAnswer] = useState<number | undefined>(0)
