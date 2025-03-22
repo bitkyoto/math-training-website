@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormData } from '@/components/SettingsCardForm'
 import { TasksForm } from '@/components/TasksForm'
@@ -10,10 +10,10 @@ import { RootState } from '@/redux/store'
 export const PlayPage = () => {
   const dispatch = useDispatch()
   const mode = useSelector((state: RootState) => state.modeSlice)
+  const tasks: Task[] = useMemo(() => generateTasks(mode), [mode])
   useEffect(() => {
-    const tasks: Task[] = generateTasks(mode)!
     dispatch(setTasks(tasks))
-  }, [])
+  }, [tasks])
   return (
     <>
       <TasksForm />

@@ -119,6 +119,7 @@ interface Data {
 }
 
 export const generateTasks = (mode: FormData) => {
+  console.log(mode)
   if (mode.selectedNumbers.length >= 1 && mode.selectedOperations.length >= 1) {
     const selectedOperations = [...mode.selectedOperations]
     const selectedNumbers = [...mode.selectedNumbers]
