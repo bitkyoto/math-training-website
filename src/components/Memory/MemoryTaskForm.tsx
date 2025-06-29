@@ -150,7 +150,9 @@ export const MemoryTaskForm = () => {
           value={answer ?? ''}
           onChange={(e) => {
             const value = e.target.value
-            setAnswer(value ? parseInt(value) : undefined)
+            if (memorizationTimeLeft === 0) {
+              setAnswer(value ? parseInt(value) : undefined)
+            }
           }}
         />
         <div className="text-center mt-4">
