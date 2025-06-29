@@ -5,8 +5,11 @@ export interface Task {
   answer: number
   userAnswer?: number
 }
-
-export interface ResultTask{
+export interface MemoryTask {
+  num1: number
+  userAnswer?: number
+}
+export interface ResultTask {
   question: string
   userAnswer: string
   isCorrect: boolean

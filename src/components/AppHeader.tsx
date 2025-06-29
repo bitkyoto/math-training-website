@@ -12,8 +12,9 @@ export function AppHeader() {
     <div className="flex h-[100px] border-b-2 border-accent p-4 justify-center items-center gap-x-4">
       <Button variant="outline" className="cursor-pointer" onClick={() => navigate('/')}>
         <House />
+        <span /> Домой
       </Button>
-      <Button variant="outline" className="cursor-pointer grow" onClick={() => navigate('/stats')}>
+      <Button variant="outline" className="cursor-pointer " onClick={() => navigate('/stats')}>
         <ChartNoAxesColumnIncreasing />
         Статистика
       </Button>
@@ -22,7 +23,6 @@ export function AppHeader() {
           <Button variant="outline" size="icon" className="cursor-pointer">
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

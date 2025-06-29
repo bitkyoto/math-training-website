@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { modeSlice } from './modeSlice'
+import { calculusModeSlice } from './calculusModeSlice'
 import { tasksSlice } from './tasksSlice'
+import { typeModeSlice } from './typeModeSlice'
+import { memoryModeSlice } from './memoryModeSlice'
 
 export const store = configureStore({
   reducer: {
-    modeSlice: modeSlice.reducer,
+    calculusModeSlice: calculusModeSlice.reducer,
+    memoryModeSlice: memoryModeSlice.reducer,
     tasksSlice: tasksSlice.reducer,
+    typeModeSlice: typeModeSlice.reducer,
   },
 })
 

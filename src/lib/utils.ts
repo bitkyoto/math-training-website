@@ -1,7 +1,6 @@
-import { ResultTask, Task } from '@/types/Task'
+import { MemoryTask, ResultTask, Task } from '@/types/Task'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { FormData } from '@/components/SettingsCardForm'
 import sha256 from 'crypto-js/sha256'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -11,7 +10,6 @@ export function getRandomInt(min: number, max: number) {
   const minCeiled = Math.ceil(min)
   const maxFloored = Math.floor(max)
   return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled)
-  // The maximum is exclusive and the minimum is inclusive
 }
 
 export function getDivisor(num: number, range: number) {
@@ -118,8 +116,7 @@ interface Data {
   correctPercentage: number
 }
 
-export const generateTasks = (mode: FormData) => {
-  console.log(mode)
+export const generateCalculusTasks = (mode) => {
   if (mode.selectedNumbers.length >= 1 && mode.selectedOperations.length >= 1) {
     const selectedOperations = [...mode.selectedOperations]
     const selectedNumbers = [...mode.selectedNumbers]
@@ -133,10 +130,19 @@ export const generateTasks = (mode: FormData) => {
     return tasks
   }
 }
+export const generateMemoryTasks = (mode): MemoryTask[] => {
+  const tasks: MemoryTask[] = []
+  for (let i = 0; i < mode.amountOfTasks; i++) {
+    tasks.push(generateMemoryTask())
+  }
+  return tasks
+}
+const generateMemoryTask = (): MemoryTask => {
+  return { num1: getRandomInt(10000, 100000) }
+}
 export function writeResults(tasks: ResultTask[]) {
   const correctTasks = tasks.filter((task: ResultTask) => task.isCorrect)
   const correctPercentage = correctTasks.length / tasks.length
-  console.log(correctPercentage)
   if (!localStorage.getItem('data')) {
     const dataToWrite: Data = {
       tasks: tasks.length,
@@ -173,6 +179,17 @@ export function getResults() {
     console.log(JSON.parse(results))
     return parsedResults.map((result, index) => ({
       tasks: result.tasks,
+      correctPercentage: result.correctPercentage * 100, // Преобразуем процент в число от 0 до 100
+    }))
+  }
+  return []
+}
+export function getGeneralResults() {
+  const results = localStorage.getItem('data')
+  if (results) {
+    const parsedResults: Data[] = JSON.parse(results)
+    return parsedResults.map((result, index) => ({
+      index: index + 1,
       correctPercentage: result.correctPercentage * 100, // Преобразуем процент в число от 0 до 100
     }))
   }

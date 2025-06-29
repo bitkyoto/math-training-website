@@ -1,23 +1,19 @@
 import React, { useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { ResultTask, Task } from '@/types/Task'
+import { ResultTask } from '@/types/Task'
 import { useNavigate } from 'react-router'
-
 import { writeResults } from '@/lib/utils'
 
 interface ReportProps {
   tasks: ResultTask[]
-  setCurrentTask: any
-  setIsCompleted: any
-  setTimeLeft: any
+  resetTest: () => void
 }
 
-export const Report = ({ tasks, setCurrentTask, setIsCompleted, setTimeLeft }: ReportProps) => {
+export const Report = ({ tasks, resetTest }: ReportProps) => {
   const navigate = useNavigate()
-  console.log('report')
-  useEffect(() => writeResults(tasks), [])
+  useEffect(() => writeResults(tasks), [tasks])
+
   return (
     <>
       <Card className="mt-[20px] mx-auto w-[350px] h-full">
@@ -29,18 +25,19 @@ export const Report = ({ tasks, setCurrentTask, setIsCompleted, setTimeLeft }: R
             <ul className="font-semibold">
               {tasks.map((result, index) => (
                 <li key={index} className={result.isCorrect ? 'text-green-500' : 'text-red-500'}>
-                  {result.question} = {result.userAnswer}{' '}
-                  {result.isCorrect ? 'Правильно' : result.userAnswer === undefined ? '' : 'Неправильно'}
+                  <div className="flex justify-between">
+                    <span>
+                      {result.question} = {result.userAnswer}
+                    </span>
+                    <span>{result.isCorrect ? 'Правильно' : result.userAnswer === undefined ? '' : 'Неправильно'}</span>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
         </CardContent>
         <div className="flex flex-col justify-center mx-auto w-50 px-6 gap-4">
-          <Button
-            className="cursor-pointer bg-destructive"
-            onClick={() => setCurrentTask(1) || setIsCompleted(false) || setTimeLeft(120)}
-          >
+          <Button className="cursor-pointer bg-destructive" onClick={resetTest}>
             Пройти заново
           </Button>
           <Button className="cursor-pointer" onClick={() => navigate('/')}>

@@ -1,22 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Task } from '@/types/Task';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { MemoryTask, Task } from '@/types/Task'
 
-const initialState: Task[] = [];
+const initialState = {
+  calculusTasks: [],
+  memoryTasks: [],
+}
 
 export const tasksSlice = createSlice({
   name: 'tasksSlice',
   initialState,
   reducers: {
-    setTasks(state, action: PayloadAction<Task[]>) {
-      return action.payload;
+    setCalculusTasks(state, action: PayloadAction<Task[]>) {
+      state.calculusTasks = action.payload
     },
-    updateAnswer(state, action: PayloadAction<{ index: number; userAnswer: number }>) {
-      const { index, userAnswer } = action.payload;
-      if (index >= 0 && index < state.length) {
-        state[index].userAnswer = userAnswer;
+    setMemoryTasks(state, action) {
+      state.memoryTasks = action.payload
+    },
+    updateCalculusAnswer(state, action: PayloadAction<{ index: number; userAnswer: number }>) {
+      const { index, userAnswer } = action.payload
+      if (index >= 0 && index < state.calculusTasks.length) {
+        state.calculusTasks[index].userAnswer = userAnswer
+      }
+    },
+    updateMemoryAnswer(state, action) {
+      const { index, userAnswer } = action.payload
+      if (index >= 0 && index < state.memoryTasks.length) {
+        state.memoryTasks[index].userAnswer = userAnswer
       }
     },
   },
-});
+})
 
-export const { setTasks, updateAnswer } = tasksSlice.actions;
+export const { setCalculusTasks, setMemoryTasks, updateCalculusAnswer, updateMemoryAnswer } = tasksSlice.actions
